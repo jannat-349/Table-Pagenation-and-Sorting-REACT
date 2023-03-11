@@ -1,0 +1,11 @@
+.entries__output {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+
+.next__btn {
+    width: 200px;
+    margin: auto;
+}
