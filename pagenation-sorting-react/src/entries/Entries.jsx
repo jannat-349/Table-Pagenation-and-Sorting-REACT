@@ -19,7 +19,6 @@ function Entries() {
     }
   }, [entrySerial]);
 
-  
   const fetchData = async () => {
     try {
       setIsLoading(true);
@@ -46,9 +45,9 @@ function Entries() {
     setPageNo((pageNo) => pageNo - 1);
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
 
   function sort__entries() {
     // setIsLoading(true);
