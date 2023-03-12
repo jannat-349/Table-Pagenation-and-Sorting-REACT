@@ -49,12 +49,13 @@ body {
     cursor: pointer;
     transition: all 0.2s;
 }
-.next__btn :hover {
+.next__btn:hover {
     background-color: rgb(28, 132, 153);
+    color: white;
 }
 .next__btn:active {
-    opacity: 80%;
-    padding: 20px 30px;
+    opacity: .7;
+    /* padding: 20px 30px; */
 }
 
 .button__pageNo {
@@ -69,4 +70,23 @@ body {
     flex-direction: column;
     gap: 20px;
     flex: 1;
+}
+
+.sort__btn {
+    border: 2px solid rgb(28, 132, 153);
+    /* font-size: 20px; */
+    padding: 10px 20px;
+    border-radius: 50px;
+    margin-left: 20px;
+    background-color: white;
+    font-weight: 400;
+    transition: all 0.2s;
+}
+
+.sort__btn:hover {
+    background-color: rgb(28, 132, 153);
+    cursor: pointer;
+}
+.sort__btn:active {
+    opacity: 0.7;
 }
