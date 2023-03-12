@@ -5,16 +5,20 @@ function Entries() {
   const [entries, setEntries] = useState([]);
   const [entrySerial, setEntrySerial] = useState(0);
   const [pageNo, setPageNo] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     // console.log("effect hook triggered");
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const res = await fetch("https://api.publicapis.org/entries");
         const data = await res.json();
         setEntries(data.entries.slice(entrySerial, entrySerial + 10));
       } catch (err) {
         alert("failed to load data");
         console.error(err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -28,6 +32,10 @@ function Entries() {
   function showPrevious() {
     setEntrySerial((entrySerial) => entrySerial - 10);
     setPageNo((pageNo) => pageNo - 1);
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   return (
