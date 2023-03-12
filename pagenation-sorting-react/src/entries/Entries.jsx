@@ -8,25 +8,34 @@ function Entries() {
   const [isLoading, setIsLoading] = useState(false);
   const [state, setState] = useState("");
   useEffect(() => {
-    // console.log("effect hook triggered");
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch("https://api.publicapis.org/entries");
-        const data = await res.json();
-        setEntries(data.entries.slice(entrySerial, entrySerial + 10));
-        setState("ogochalo");
-
-        // console.log(entries.state);
-      } catch (err) {
-        alert("failed to load data");
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
+    const storedEntries = localStorage.getItem("entriedData");
+    if (storedEntries) {
+      setEntries(
+        JSON.parse(storedEntries).entries.slice(entrySerial, entrySerial + 10)
+      );
+      setState("ogochalo");
+    } else {
+      fetchData();
+    }
   }, [entrySerial]);
+
+  
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch("https://api.publicapis.org/entries");
+      const data = await res.json();
+      setEntries(data.entries.slice(entrySerial, entrySerial + 10));
+      setState("ogochalo");
+      localStorage.setItem("entriedData", JSON.stringify(data));
+      // console.log(entries.state);
+    } catch (err) {
+      alert("failed to load data");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   function showNext() {
     setEntrySerial((entrySerial) => entrySerial + 10);
@@ -74,9 +83,13 @@ function Entries() {
             <th>
               Description
               {state === "ogochalo" || state === "descending" ? (
-                <button onClick={sort__entries} className = "sort__btn">Ascending Sort</button>
+                <button onClick={sort__entries} className="sort__btn">
+                  Ascending Sort
+                </button>
               ) : (
-                <button onClick={sort__entries} className = "sort__btn">Descending Sort</button>
+                <button onClick={sort__entries} className="sort__btn">
+                  Descending Sort
+                </button>
               )}
             </th>
             <th>Category</th>
