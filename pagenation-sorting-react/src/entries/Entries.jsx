@@ -7,25 +7,27 @@ function Entries() {
   const [pageNo, setPageNo] = useState(1);
   useEffect(() => {
     // console.log("effect hook triggered");
-    fetch("https://api.publicapis.org/entries")
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("https://api.publicapis.org/entries");
+        const data = await res.json();
         setEntries(data.entries.slice(entrySerial, entrySerial + 10));
-
-        // console.log(`${entries[0]}`);
-      })
-      .catch((err) => {
+      } catch (err) {
+        alert("failed to load data");
         console.error(err);
-      });
+      }
+    };
+
+    fetchData();
   }, [entrySerial]);
 
   function showNext() {
     setEntrySerial((entrySerial) => entrySerial + 10);
-    setPageNo((pageNo) => pageNo+1);
+    setPageNo((pageNo) => pageNo + 1);
   }
   function showPrevious() {
     setEntrySerial((entrySerial) => entrySerial - 10);
-    setPageNo((pageNo) => pageNo-1);
+    setPageNo((pageNo) => pageNo - 1);
   }
 
   return (
