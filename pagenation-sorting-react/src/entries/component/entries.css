@@ -57,7 +57,7 @@ body {
 .next__btn:active {
     opacity: .7;
     /* padding: 20px 30px; */
-}
+ }
 
 .button__pageNo {
     display: flex;

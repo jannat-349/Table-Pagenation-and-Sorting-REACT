@@ -8,26 +8,17 @@ function Entries() {
   const [isLoading, setIsLoading] = useState(false);
   const [state, setState] = useState("");
   useEffect(() => {
-    const storedEntries = localStorage.getItem("entriedData");
-    if (storedEntries) {
-      setEntries(
-        JSON.parse(storedEntries).entries.slice(entrySerial, entrySerial + 10)
-      );
-      setState("ogochalo");
-    } else {
-      fetchData();
-    }
+    fetchData();
   }, [entrySerial]);
 
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("https://api.publicapis.org/entries");
+      const res = await fetch("http://localhost:5000/api/products/");
       const data = await res.json();
-      setEntries(data.entries.slice(entrySerial, entrySerial + 10));
+      // console.log([...data]);
+      setEntries([...data].slice(entrySerial, entrySerial + 10));
       setState("ogochalo");
-      localStorage.setItem("entriedData", JSON.stringify(data));
-      // console.log(entries.state);
     } catch (err) {
       alert("failed to load data");
       console.error(err);
@@ -45,60 +36,58 @@ function Entries() {
     setPageNo((pageNo) => pageNo - 1);
   }
 
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  function sort__entries() {
-    // setIsLoading(true);
+  function sortEntries() {
     if (state === "ogochalo" || state === "descending") {
       setEntries((entries) =>
         entries.sort((entry_1, entry_2) => {
-          return entry_1.Description > entry_2.Description ? 1 : -1;
+          return entry_1.name > entry_2.name ? 1 : -1;
         })
       );
-      //   console.log(entries);
-      // entries.sort();
       setState("ascending");
     } else if (state === "ascending") {
       setEntries((entries) =>
         entries.sort((entry_1, entry_2) => {
-          return entry_1.Description < entry_2.Description ? 1 : -1;
+          return entry_1.name < entry_2.name ? 1 : -1;
         })
       );
       setState("descending");
-      // setEntries((entries) => entries
-      // .sort((a,b) => b.Description - a.Description));
     }
   }
 
   return (
     <div className="entries__output">
-      {/* {console.log("rendered")} */}
       <table className="entry__tbl">
         <caption>Entry Table</caption>
         <thead>
           <tr>
             <th>
-              Description
+              Name
               {state === "ogochalo" || state === "descending" ? (
-                <button onClick={sort__entries} className="sort__btn">
+                <button onClick={sortEntries} className="sort__btn">
                   Ascending Sort
                 </button>
               ) : (
-                <button onClick={sort__entries} className="sort__btn">
+                <button onClick={sortEntries} className="sort__btn">
                   Descending Sort
                 </button>
               )}
             </th>
-            <th>Category</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Unit</th>
           </tr>
         </thead>
         <tbody>
-          {entries.map((entry, index) => (
+          {[...entries].map((entry, index) => (
             <tr key={index}>
-              <td>{entry.Description}</td>
-              <td>{entry.Category}</td>
+              <td>{entry.name}</td>
+              <td>{entry.price}</td>
+              <td>{entry.quantity}</td>
+              <td>{entry.unit}</td>
             </tr>
           ))}
         </tbody>
